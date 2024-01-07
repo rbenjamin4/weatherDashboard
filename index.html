@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/style.css">
     <script src="./js/app.js" defer></script>
 </head>
 <body>
-    <input id="input" type="text" />
-    <button id="search">Search</button>
+   
     <main class="container">
         <h2>Weather Forecast</h2>
         <!-- <div class="weather row row-cols-1 row-cols-md-3 g-4">
@@ -29,13 +29,25 @@
     
           </div> -->
 
-          <div class="container">
+          <div class="container container-margin">
+            <div class="col">
+            <input id="input" type="text" />
+            <button id="search">Search</button>
+            </div>
+            <div class="row" id="current-city-row"></div>
+            <div class="row" id="current-date-row"></div>
+            <div class="row" id="current-icon-row"></div>
+            <div class="row" id="current-temp-row"></div>
+            <div class="row" id="current-humidity-row"></div>
+            <div class="row" id="current-wind-row"></div>
+        </div>
+          
+          <div class="container container-margin">
             <div class="row" id="date-row"></div>
             <div class="row" id="icon-row"></div>
             <div class="row" id="temp-row"></div>
             <div class="row" id="humidity-row"></div>
             <div class="row" id="wind-row"></div>
-            <div id="results-container"></div>
         </div>
     </main>
 </body>
