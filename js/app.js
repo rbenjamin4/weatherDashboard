@@ -1,7 +1,9 @@
 const userInput = document.querySelector('#input')
 const button = document.querySelector('#search')
+const results = document.querySelector('#results-container')
 
 const getWeather = async () => {
+    
     const APIKey = 'b392aae0fde35000c51596ef36233a2f'
     const cityName = document.querySelector('#input')
 
@@ -23,8 +25,6 @@ const getWeather = async () => {
     const currentData = await currentWeather.json()
     console.log(currentData)
 
-    let weatherRow = document.querySelector('.weather')
-    let resultsContainer = document.getElementById('results-container')
     let dateRow = document.getElementById('date-row')
     let iconRow = document.getElementById('icon-row')
     let tempRow = document.getElementById('temp-row')
@@ -43,6 +43,13 @@ let cityEl = document.createElement('h2')
 cityEl.textContent = currentCityName.toUpperCase()
 cityDiv.appendChild(cityEl)
 currentCityRow.appendChild(cityDiv)
+
+localStorage.setItem('cityInput', currentCityName)
+let storedCityInput = localStorage.getItem('cityInput')
+let pastSearchDiv = document.getElementById('past-search')
+let pastSearchButton = document.createElement('button')
+pastSearchButton.textContent = storedCityInput
+pastSearchDiv.appendChild(pastSearchButton)
 
 
 const currentDate = currentData.dt
@@ -91,7 +98,7 @@ currentWindEl.textContent = 'Wind: ' + currentData.wind.speed + ' mph'
 currentWindDiv.appendChild(currentWindEl)
 currentWindRow.appendChild(currentWindDiv)
 
-    for (let i = 3; i < weatherData.list.length; i += 8) {
+    for (let i = 6; i < weatherData.list.length; i += 8) {
         // console.log(weatherData.list[i].dt_txt)
 
         // Create a new column div for each result
@@ -101,8 +108,11 @@ currentWindRow.appendChild(currentWindDiv)
         // Create a new element to hold each result (e.g., a paragraph)
         let resultElement = document.createElement('p')
 
+        const date = new Date (weatherData.list[i].dt * 1000)
+        const formatDate = date.toLocaleDateString('en-US')
+
         // Set the text content of the element to the current result
-        resultElement.textContent = weatherData.list[i].dt_txt
+        resultElement.textContent = formatDate
 
         // Append the result element to the column
         columnDiv.appendChild(resultElement)
@@ -111,7 +121,7 @@ currentWindRow.appendChild(currentWindDiv)
         dateRow.appendChild(columnDiv)
     }
 
-    for (let i = 3; i < weatherData.list.length; i += 8) {
+    for (let i = 6; i < weatherData.list.length; i += 8) {
         // console.log(weatherData.list[i].weather[0].icon)
 
         let columnDiv = document.createElement('div')
@@ -131,7 +141,7 @@ currentWindRow.appendChild(currentWindDiv)
         iconRow.appendChild(columnDiv)
     }
 
-    for (let i = 3; i < weatherData.list.length; i += 8) {
+    for (let i = 6; i < weatherData.list.length; i += 8) {
         // console.log(weatherData.list[i].main.temp)
 
         let columnDiv = document.createElement('div')
@@ -150,7 +160,7 @@ currentWindRow.appendChild(currentWindDiv)
         tempRow.appendChild(columnDiv)
     }
 
-    for (let i = 3; i < weatherData.list.length; i += 8) {
+    for (let i = 6; i < weatherData.list.length; i += 8) {
         // console.log(weatherData.list[i].main.humidity)
 
         let columnDiv = document.createElement('div')
@@ -169,7 +179,7 @@ currentWindRow.appendChild(currentWindDiv)
         humidityRow.appendChild(columnDiv)
     }
 
-    for (let i = 3; i < weatherData.list.length; i += 8) {
+    for (let i = 6; i < weatherData.list.length; i += 8) {
         // console.log(weatherData.list[i].wind.speed)
 
         let columnDiv = document.createElement('div')
