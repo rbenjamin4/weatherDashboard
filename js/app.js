@@ -12,7 +12,7 @@ const cityButton = () => {
         cityButtonEl.classList.add('citySearchButton')
         cityButtonEl.addEventListener('click', function (event) {
             let city = event.target.textContent
-            console.log(city)
+            getForecast(city)
         })
         citySearchEl.append(cityButtonEl)
     }
@@ -20,12 +20,35 @@ const cityButton = () => {
 
 cityButton()
 
-const getWeather = async () => {
+const getSearch = async () => {
+    const cityName = document.querySelector('#input')
+    getForecast(cityName.value)
+
+    const addCity = (newCity) => {
+
+        if (localStorage.getItem('data') == null) {
+            localStorage.setItem('data', '[]')
+        }
+
+        let old_city = JSON.parse(localStorage.getItem('data'))
+        if (old_city.indexOf(newCity) === -1) {
+
+
+            old_city.push(newCity)
+
+            localStorage.setItem('data', JSON.stringify(old_city))
+            cityButton()
+        }
+    }
+
+    addCity(cityName.value)
+}
+
+const getForecast = async (cityName) => {
 
     const APIKey = 'b392aae0fde35000c51596ef36233a2f'
-    const cityName = document.querySelector('#input')
 
-    const response = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${cityName.value}&limit=1&appid=${APIKey}`)
+    const response = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=1&appid=${APIKey}`)
     const cityData = await response.json()
     console.log(cityData)
 
@@ -55,32 +78,12 @@ const getWeather = async () => {
     let currentWindRow = document.getElementById('current-wind-row')
     let currentCityRow = document.getElementById('current-city-row')
 
-    const addCity = () => {
-        let newCity = userInput.value
-
-        if (localStorage.getItem('data') == null) {
-            localStorage.setItem('data', '[]')
-        }
-
-        let old_city = JSON.parse(localStorage.getItem('data'))
-        if (old_city.indexOf(newCity) === -1) {
-
-
-            old_city.push(newCity)
-
-            localStorage.setItem('data', JSON.stringify(old_city))
-            cityButton()
-        }
-    }
-
-    addCity()
-
     // const currentCityName = userInput.value
     // let cityDiv = document.createElement('div')
     // let cityEl = document.createElement('h2')
     // cityEl.textContent = currentCityName.toUpperCase()
     // cityDiv.appendChild(cityEl)
-    // currentCityRow.appendChild(cityDiv)
+    currentCityRow.textContent = cityName
 
     // localStorage.setItem('cityInput', currentCityName)
     // let storedCityInput = localStorage.getItem('cityInput')
@@ -96,6 +99,7 @@ const getWeather = async () => {
     let currentDateEl = document.createElement('p')
     currentDateEl.textContent = 'Today'
     currentDateDiv.appendChild(currentDateEl)
+    currentDateRow.innerHTML = ""
     currentDateRow.appendChild(currentDateDiv)
 
 
@@ -106,6 +110,7 @@ const getWeather = async () => {
     let currentIconEl = document.createElement('img')
     currentIconEl.src = `https://openweathermap.org/img/wn/${currentData.weather[0].icon}@2x.png`
     currentIconDiv.appendChild(currentIconEl)
+    currentIconRow.innerHTML = ""
     currentIconRow.appendChild(currentIconDiv)
 
     const currentTemp = currentData.main.temp
@@ -115,6 +120,7 @@ const getWeather = async () => {
     let currentTempEl = document.createElement('p')
     currentTempEl.textContent = 'Temp: ' + currentData.main.temp + ' °F'
     currentTempDiv.appendChild(currentTempEl)
+    currentTempRow.innerHTML = ""
     currentTempRow.appendChild(currentTempDiv)
 
     const currentHumidity = currentData.main.humidity
@@ -124,6 +130,7 @@ const getWeather = async () => {
     let currentHumidityEl = document.createElement('p')
     currentHumidityEl.textContent = 'Humidity: ' + currentData.main.humidity + '%'
     currentHumidityDiv.appendChild(currentHumidityEl)
+    currentHumidityRow.innerHTML = ""
     currentHumidityRow.appendChild(currentHumidityDiv)
 
     const currentWind = currentData.wind.speed
@@ -133,112 +140,110 @@ const getWeather = async () => {
     let currentWindEl = document.createElement('p')
     currentWindEl.textContent = 'Wind: ' + currentData.wind.speed + ' mph'
     currentWindDiv.appendChild(currentWindEl)
+    currentWindRow.innerHTML = ""
     currentWindRow.appendChild(currentWindDiv)
+
+    dateRow.innerHTML = ""
+    tempRow.innerHTML = ""
+    iconRow.innerHTML= ""
+    humidityRow.innerHTML = ""
+    windRow.innerHTML = ""
 
     for (let i = 6; i < weatherData.list.length; i += 8) {
         // console.log(weatherData.list[i].dt_txt)
 
         // Create a new column div for each result
-        let columnDiv = document.createElement('div')
-        columnDiv.className = 'col-sm-2' // Adjust the column size based on your layout needs
+        let columnDiv1 = document.createElement('div')
+        columnDiv1.className = 'col-sm-2' // Adjust the column size based on your layout needs
 
         // Create a new element to hold each result (e.g., a paragraph)
-        let resultElement = document.createElement('p')
+        let resultElement1 = document.createElement('p')
 
         const date = new Date(weatherData.list[i].dt * 1000)
         const formatDate = date.toLocaleDateString('en-US')
 
         // Set the text content of the element to the current result
-        resultElement.textContent = formatDate
+        resultElement1.textContent = formatDate
 
         // Append the result element to the column
-        columnDiv.appendChild(resultElement)
+        columnDiv1.appendChild(resultElement1)
 
         // Append the column to the row
-        dateRow.appendChild(columnDiv)
-    }
+      
+        dateRow.appendChild(columnDiv1)
 
-    for (let i = 6; i < weatherData.list.length; i += 8) {
-        // console.log(weatherData.list[i].weather[0].icon)
 
-        let columnDiv = document.createElement('div')
-        columnDiv.className = 'col-sm-2' // Adjust the column size based on your layout needs
+        let columnDiv2 = document.createElement('div')
+        columnDiv2.className = 'col-sm-2' // Adjust the column size based on your layout needs
 
         // Create a new element to hold each result (e.g., a paragraph)
-        let resultElement = document.createElement('img')
-        resultElement.src = `https://openweathermap.org/img/wn/${weatherData.list[i].weather[0].icon}@2x.png`
+        let resultElement2 = document.createElement('img')
+        resultElement2.src = `https://openweathermap.org/img/wn/${weatherData.list[i].weather[0].icon}@2x.png`
 
         // Set the text content of the element to the current result
         // resultElement.textContent = weatherData.list[i].weather[0].icon
 
         // Append the result element to the column
-        columnDiv.appendChild(resultElement)
+        columnDiv2.appendChild(resultElement2)
 
         // Append the column to the row
-        iconRow.appendChild(columnDiv)
-    }
+        iconRow.appendChild(columnDiv2)
 
-    for (let i = 6; i < weatherData.list.length; i += 8) {
-        // console.log(weatherData.list[i].main.temp)
 
-        let columnDiv = document.createElement('div')
-        columnDiv.className = 'col-sm-2' // Adjust the column size based on your layout needs
+        let columnDiv3 = document.createElement('div')
+        columnDiv3.className = 'col-sm-2' // Adjust the column size based on your layout needs
 
         // Create a new element to hold each result (e.g., a paragraph)
-        let resultElement = document.createElement('p')
+        let resultElement3 = document.createElement('p')
 
         // Set the text content of the element to the current result
-        resultElement.textContent = 'Temp: ' + weatherData.list[i].main.temp + ' °F'
+        resultElement3.textContent = 'Temp: ' + weatherData.list[i].main.temp + ' °F'
 
         // Append the result element to the column
-        columnDiv.appendChild(resultElement)
+        columnDiv3.appendChild(resultElement3)
 
         // Append the column to the row
-        tempRow.appendChild(columnDiv)
-    }
+        tempRow.appendChild(columnDiv3)
 
-    for (let i = 6; i < weatherData.list.length; i += 8) {
-        // console.log(weatherData.list[i].main.humidity)
 
-        let columnDiv = document.createElement('div')
-        columnDiv.className = 'col-sm-2' // Adjust the column size based on your layout needs
+        let columnDiv4 = document.createElement('div')
+        columnDiv4.className = 'col-sm-2' // Adjust the column size based on your layout needs
 
         // Create a new element to hold each result (e.g., a paragraph)
-        let resultElement = document.createElement('p')
+        let resultElement4 = document.createElement('p')
 
         // Set the text content of the element to the current result
-        resultElement.textContent = 'Humidity: ' + weatherData.list[i].main.humidity + '%'
+        resultElement4.textContent = 'Humidity: ' + weatherData.list[i].main.humidity + '%'
 
         // Append the result element to the column
-        columnDiv.appendChild(resultElement)
+        columnDiv4.appendChild(resultElement4)
 
         // Append the column to the row
-        humidityRow.appendChild(columnDiv)
-    }
+   
+        humidityRow.appendChild(columnDiv4)
 
-    for (let i = 6; i < weatherData.list.length; i += 8) {
-        // console.log(weatherData.list[i].wind.speed)
 
-        let columnDiv = document.createElement('div')
-        columnDiv.className = 'col-sm-2' // Adjust the column size 
+        let columnDiv5 = document.createElement('div')
+        columnDiv5.className = 'col-sm-2' // Adjust the column size 
 
         // Create a new paragraph
-        let resultElement = document.createElement('p')
+        let resultElement5 = document.createElement('p')
 
         // Set the text content of the element to the current result
-        resultElement.textContent = 'Wind: ' + weatherData.list[i].wind.speed + ' mph'
+        resultElement5.textContent = 'Wind: ' + weatherData.list[i].wind.speed + ' mph'
 
         // Append the result element to the column
-        columnDiv.appendChild(resultElement)
+        columnDiv5.appendChild(resultElement5)
 
         // Append the column to the row
-        windRow.appendChild(columnDiv)
+    
+        windRow.appendChild(columnDiv5)
     }
 
     userInput.value = ''
 
 }
 
-button.addEventListener('click', getWeather)
+button.addEventListener('click', getSearch)
 
 
