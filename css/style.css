@@ -1,3 +1,7 @@
-.container-margin {
+.margin-bottom {
     margin-bottom: 50px;
+}
+
+.margin-bottom-small {
+    margin-bottom: 25px;
 }

@@ -1,56 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="./css/style.css">
-    <script src="./js/app.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <link rel="stylesheet" href="./css/style.css">
+  <script src="./js/app.js" defer></script>
 </head>
+
 <body>
-   
-    <main class="container">
-        <h2>Weather Forecast</h2>
-        <!-- <div class="weather row row-cols-1 row-cols-md-3 g-4">
-            <div class="col">
-                
-                <div class="card h-100">
-                  <img src="https://openweathermap.org/img/wn/10d@4x.png" class="card-img-top" alt="...">
-                  <div class="card-body">
-                    <div id="results-container"></div>
-                    <h5 class="card-title">Date</h5>
-                    <p class="card-text">Temperature</p>
-                    <p class="card-text">Humidity</p>
-                    <p class="card-text">Wind Speed</p>
-                  </div>
-                </div>
-                 </div>
-    
-          </div> -->
-<div id="results-container">
-          <div class="container container-margin">
-            <div class="col">
-            <input id="input" type="text" />
-            <button id="search">Search</button>
-            <div id="past-search"></div>
-            </div>
-            <h2 class="text-center text-uppercase" id="current-city-row"></h2>
-            <div class="row" id="current-date-row"></div>
-            <div class="row" id="current-icon-row"></div>
-            <div class="row" id="current-temp-row"></div>
-            <div class="row" id="current-humidity-row"></div>
-            <div class="row" id="current-wind-row"></div>
+
+  <main class="container">
+    <h2 class="display-2 text-center">Weather Forecast</h2>
+
+    <div id="results-container">
+      <div class="container margin-bottom">
+        <div class="col">
+          <input id="input" type="text" />
+          <button id="search" class="btn btn-primary">Search</button>
+          <div id="past-search" class="margin-bottom-small"></div>
         </div>
-          
-          <div class="container container-margin">
-            <div class="row" id="date-row"></div>
-            <div class="row" id="icon-row"></div>
-            <div class="row" id="temp-row"></div>
-            <div class="row" id="humidity-row"></div>
-            <div class="row" id="wind-row"></div>
-        </div>
+        <h2 class="text-center text-uppercase" id="current-city-row"></h2>
+        <div class="row" id="current-date-row"></div>
+        <div class="row" id="current-icon-row"></div>
+        <div class="row" id="current-temp-row"></div>
+        <div class="row" id="current-humidity-row"></div>
+        <div class="row" id="current-wind-row"></div>
       </div>
-    </main>
+
+      <div class="container margin-bottom">
+        <div class="row" id="date-row"></div>
+        <div class="row" id="icon-row"></div>
+        <div class="row" id="temp-row"></div>
+        <div class="row" id="humidity-row"></div>
+        <div class="row" id="wind-row"></div>
+      </div>
+    </div>
+  </main>
 </body>
+
 </html>
