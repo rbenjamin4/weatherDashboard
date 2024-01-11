@@ -2,32 +2,6 @@ const userInput = document.querySelector('#input')
 const button = document.querySelector('#search')
 const results = document.querySelector('#results-container')
 
-
-// Save and display city search names to new buttons
-const cityButton = () => {
-    let citySearchEl = document.getElementById('past-search')
-    let old_city = JSON.parse(localStorage.getItem('data'))
-    citySearchEl.innerHTML = ''
-
-    if (old_city.length === null){
-        return []
-    } 
-    
-    for (let i = 0; i < old_city.length; i++) {
-        let cityButtonEl = document.createElement('button')
-        cityButtonEl.className = 'btn btn-secondary m-3'
-        cityButtonEl.textContent = old_city[i]
-        cityButtonEl.classList.add('citySearchButton')
-        cityButtonEl.addEventListener('click', function (event) {
-            let city = event.target.textContent
-            getForecast(city)
-        })
-        citySearchEl.append(cityButtonEl)
-    }
-}
-
-cityButton()
-
 // Search by city
 const getSearch = async () => {
     const cityName = document.querySelector('#input')
@@ -236,6 +210,27 @@ const getForecast = async (cityName) => {
     userInput.value = ''
 
 }
+
+// Save and display city search names to new buttons
+const cityButton = () => {
+    let citySearchEl = document.getElementById('past-search')
+    let old_city = JSON.parse(localStorage.getItem('data'))
+    citySearchEl.innerHTML = ''
+    
+    for (let i = 0; i < old_city.length; i++) {
+        let cityButtonEl = document.createElement('button')
+        cityButtonEl.className = 'btn btn-secondary m-3'
+        cityButtonEl.textContent = old_city[i]
+        cityButtonEl.classList.add('citySearchButton')
+        cityButtonEl.addEventListener('click', function (event) {
+            let city = event.target.textContent
+            getForecast(city)
+        })
+        citySearchEl.append(cityButtonEl)
+    }
+}
+
+cityButton()
 
 
 button.addEventListener('click', getSearch)
