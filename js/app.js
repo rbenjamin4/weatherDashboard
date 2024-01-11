@@ -8,6 +8,11 @@ const cityButton = () => {
     let citySearchEl = document.getElementById('past-search')
     let old_city = JSON.parse(localStorage.getItem('data'))
     citySearchEl.innerHTML = ''
+
+    if (old_city.length === null){
+        return []
+    } 
+    
     for (let i = 0; i < old_city.length; i++) {
         let cityButtonEl = document.createElement('button')
         cityButtonEl.className = 'btn btn-secondary m-3'
