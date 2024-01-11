@@ -57,7 +57,7 @@ const getForecast = async (cityName) => {
 
     const APIKey = 'b392aae0fde35000c51596ef36233a2f'
 
-    const response = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=1&appid=${APIKey}`)
+    const response = await fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=1&appid=${APIKey}`)
     const cityData = await response.json()
 
     const long = cityData[0].lon
