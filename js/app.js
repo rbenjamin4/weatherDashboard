@@ -2,12 +2,15 @@ const userInput = document.querySelector('#input')
 const button = document.querySelector('#search')
 const results = document.querySelector('#results-container')
 
+
+// Save and display city search names to new buttons
 const cityButton = () => {
     let citySearchEl = document.getElementById('past-search')
     let old_city = JSON.parse(localStorage.getItem('data'))
     citySearchEl.innerHTML = ''
     for (let i = 0; i < old_city.length; i++) {
         let cityButtonEl = document.createElement('button')
+        cityButtonEl.className = 'btn btn-secondary m-3'
         cityButtonEl.textContent = old_city[i]
         cityButtonEl.classList.add('citySearchButton')
         cityButtonEl.addEventListener('click', function (event) {
@@ -20,10 +23,12 @@ const cityButton = () => {
 
 cityButton()
 
+// Search by city
 const getSearch = async () => {
     const cityName = document.querySelector('#input')
     getForecast(cityName.value)
 
+    // Add city to local storage
     const addCity = (newCity) => {
 
         if (localStorage.getItem('data') == null) {
@@ -44,28 +49,24 @@ const getSearch = async () => {
     addCity(cityName.value)
 }
 
+// Function to obtain weather forecast data from API
 const getForecast = async (cityName) => {
 
     const APIKey = 'b392aae0fde35000c51596ef36233a2f'
 
     const response = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=1&appid=${APIKey}`)
     const cityData = await response.json()
-    console.log(cityData)
 
     const long = cityData[0].lon
     const lat = cityData[0].lat
 
-    console.log(long)
-    console.log(lat)
-
     const weatherResponse = await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&appid=${APIKey}&units=imperial`)
     const weatherData = await weatherResponse.json()
-    console.log(weatherData)
 
     const currentWeather = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=${APIKey}&units=imperial`)
     const currentData = await currentWeather.json()
-    console.log(currentData)
 
+    // Select elements by ID
     let dateRow = document.getElementById('date-row')
     let iconRow = document.getElementById('icon-row')
     let tempRow = document.getElementById('temp-row')
@@ -78,31 +79,20 @@ const getForecast = async (cityName) => {
     let currentWindRow = document.getElementById('current-wind-row')
     let currentCityRow = document.getElementById('current-city-row')
 
-    // const currentCityName = userInput.value
-    // let cityDiv = document.createElement('div')
-    // let cityEl = document.createElement('h2')
-    // cityEl.textContent = currentCityName.toUpperCase()
-    // cityDiv.appendChild(cityEl)
+    // Populate city name on page
     currentCityRow.textContent = cityName
 
-    // localStorage.setItem('cityInput', currentCityName)
-    // let storedCityInput = localStorage.getItem('cityInput')
-    // let pastSearchDiv = document.getElementById('past-search')
-    // let pastSearchButton = document.createElement('button')
-    // pastSearchButton.textContent = storedCityInput
-    // pastSearchDiv.appendChild(pastSearchButton)
-
+    // Populate today
     const currentDate = currentData.dt
-    console.log(currentDate)
     let currentDateDiv = document.createElement('div')
     currentDateDiv.className = 'col-9'
-    let currentDateEl = document.createElement('p')
+    let currentDateEl = document.createElement('h3')
     currentDateEl.textContent = 'Today'
     currentDateDiv.appendChild(currentDateEl)
     currentDateRow.innerHTML = ""
     currentDateRow.appendChild(currentDateDiv)
 
-
+    // Populate weather icons
     const currentIcon = currentData.weather[0].icon
     console.log(currentIcon)
     let currentIconDiv = document.createElement('div')
@@ -113,6 +103,7 @@ const getForecast = async (cityName) => {
     currentIconRow.innerHTML = ""
     currentIconRow.appendChild(currentIconDiv)
 
+    // Populate temp data
     const currentTemp = currentData.main.temp
     console.log(currentTemp)
     let currentTempDiv = document.createElement('div')
@@ -123,6 +114,7 @@ const getForecast = async (cityName) => {
     currentTempRow.innerHTML = ""
     currentTempRow.appendChild(currentTempDiv)
 
+    //Populate humidity data
     const currentHumidity = currentData.main.humidity
     console.log(currentHumidity)
     let currentHumidityDiv = document.createElement('div')
@@ -133,6 +125,7 @@ const getForecast = async (cityName) => {
     currentHumidityRow.innerHTML = ""
     currentHumidityRow.appendChild(currentHumidityDiv)
 
+    // Populate wind speed data
     const currentWind = currentData.wind.speed
     console.log(currentWind)
     let currentWindDiv = document.createElement('div')
@@ -143,21 +136,22 @@ const getForecast = async (cityName) => {
     currentWindRow.innerHTML = ""
     currentWindRow.appendChild(currentWindDiv)
 
+    // Clear divs 
     dateRow.innerHTML = ""
     tempRow.innerHTML = ""
-    iconRow.innerHTML= ""
+    iconRow.innerHTML = ""
     humidityRow.innerHTML = ""
     windRow.innerHTML = ""
 
-    for (let i = 6; i < weatherData.list.length; i += 8) {
-        // console.log(weatherData.list[i].dt_txt)
+    // Get weather data for each day of the 5 day forecast and put on page
+    for (let i = 1; i < weatherData.list.length; i += 8) {
 
         // Create a new column div for each result
         let columnDiv1 = document.createElement('div')
-        columnDiv1.className = 'col-sm-2' // Adjust the column size based on your layout needs
+        columnDiv1.className = 'col-sm-2' // Adjust the column size 
 
-        // Create a new element to hold each result (e.g., a paragraph)
-        let resultElement1 = document.createElement('p')
+        // Create a new element to hold each result 
+        let resultElement1 = document.createElement('h4')
 
         const date = new Date(weatherData.list[i].dt * 1000)
         const formatDate = date.toLocaleDateString('en-US')
@@ -169,19 +163,15 @@ const getForecast = async (cityName) => {
         columnDiv1.appendChild(resultElement1)
 
         // Append the column to the row
-      
         dateRow.appendChild(columnDiv1)
 
 
         let columnDiv2 = document.createElement('div')
-        columnDiv2.className = 'col-sm-2' // Adjust the column size based on your layout needs
+        columnDiv2.className = 'col-sm-2' // Adjust the column size 
 
-        // Create a new element to hold each result (e.g., a paragraph)
+        // Create a new element to hold each result 
         let resultElement2 = document.createElement('img')
         resultElement2.src = `https://openweathermap.org/img/wn/${weatherData.list[i].weather[0].icon}@2x.png`
-
-        // Set the text content of the element to the current result
-        // resultElement.textContent = weatherData.list[i].weather[0].icon
 
         // Append the result element to the column
         columnDiv2.appendChild(resultElement2)
@@ -191,9 +181,9 @@ const getForecast = async (cityName) => {
 
 
         let columnDiv3 = document.createElement('div')
-        columnDiv3.className = 'col-sm-2' // Adjust the column size based on your layout needs
+        columnDiv3.className = 'col-sm-2' // Adjust the column size 
 
-        // Create a new element to hold each result (e.g., a paragraph)
+        // Create a new element to hold each result
         let resultElement3 = document.createElement('p')
 
         // Set the text content of the element to the current result
@@ -207,9 +197,9 @@ const getForecast = async (cityName) => {
 
 
         let columnDiv4 = document.createElement('div')
-        columnDiv4.className = 'col-sm-2' // Adjust the column size based on your layout needs
+        columnDiv4.className = 'col-sm-2' // Adjust the column size 
 
-        // Create a new element to hold each result (e.g., a paragraph)
+        // Create a new element to hold each result 
         let resultElement4 = document.createElement('p')
 
         // Set the text content of the element to the current result
@@ -219,7 +209,6 @@ const getForecast = async (cityName) => {
         columnDiv4.appendChild(resultElement4)
 
         // Append the column to the row
-   
         humidityRow.appendChild(columnDiv4)
 
 
@@ -236,13 +225,13 @@ const getForecast = async (cityName) => {
         columnDiv5.appendChild(resultElement5)
 
         // Append the column to the row
-    
         windRow.appendChild(columnDiv5)
     }
 
     userInput.value = ''
 
 }
+
 
 button.addEventListener('click', getSearch)
 
